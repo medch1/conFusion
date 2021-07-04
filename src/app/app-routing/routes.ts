@@ -9,6 +9,7 @@ import {Dish} from "../shared/dish";
 
 export const routes:Routes =[
   {path:'home',component:HomeComponent},
+  {path:'aboutus',component:AboutComponent},
   {path:'menu',component:MenuComponent},
   {path:'dishdetail/:id',component:DishdetailComponent},
   {path:'contactus',component:ContactComponent},
