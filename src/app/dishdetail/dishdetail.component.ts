@@ -41,6 +41,7 @@ export class DishdetailComponent implements OnInit {
   };
 
   dish: Dish | undefined;
+  errMess: string | undefined;
   dishIds: string[] | undefined;
   prev: string | undefined;
   next: string | undefined;
@@ -65,9 +66,12 @@ export class DishdetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dishService.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
-    this.route.params.pipe(switchMap((params: Params) => this.dishService.getdish(params['id'])))
-      .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); });
+    this.dishService.getDishIds()
+      .subscribe(dishIds => this.dishIds = dishIds);
+    this.route.params
+      .pipe(switchMap((params: Params) => this.dishService.getdish(params['id'])))
+      .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); },
+        errmess=>this.errMess=<any> errmess);
   }
   setPrevNext(dishId:string|undefined) {
     if (dishId != null) {
