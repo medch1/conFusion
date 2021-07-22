@@ -31,6 +31,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatSliderModule} from "@angular/material/slider";
+import {HttpClientModule} from "@angular/common/http";
+import {baseURL} from './shared/baseurl';
+
 
 @NgModule({
   declarations: [
@@ -45,28 +49,32 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     LoginComponent,
 
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    FlexLayoutModule,
-    AppRoutingModule,
-    MatToolbarModule,
-    MatListModule,
-    MatGridListModule,
-    MatCardModule,
-    MatButtonModule,
-    MatDialogModule,
-    FormsModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatProgressSpinnerModule
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        FlexLayoutModule,
+        AppRoutingModule,
+        HttpClientModule,
+        MatToolbarModule,
+        MatListModule,
+        MatGridListModule,
+        MatCardModule,
+        MatButtonModule,
+        MatDialogModule,
+        FormsModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatCheckboxModule,
+        MatProgressSpinnerModule,
+        MatSliderModule,
 
-  ],
-  providers: [DishService,PromotionService, LeaderService],
+
+    ],
+  providers: [DishService,PromotionService, LeaderService,
+    {provide:'BaseURL',useValue:baseURL}],
   entryComponents:[LoginComponent],
   bootstrap: [AppComponent]
 })

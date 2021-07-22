@@ -11,7 +11,7 @@
       <mat-card-header>
        <mat-card-title><h3 *ngIf="dish">{{dish.name | uppercase}}</h3></mat-card-title>
       </mat-card-header>
-      <img mat-card-image src="{{dish.image}}" alt="{{dish.name}}">
+      <img mat-card-image src="{{BaseURL+dish.image}}" alt="{{dish.name}}">
       <mat-card-content>
         <p>{{dish.description}}</p>
 
@@ -35,19 +35,61 @@
   </div>
 
   <div fxFlex="40" *ngIf="dish">
-  <mat-list fxFlex>
-    <mat-list-item *ngFor="let comment of dish.comments">
-      <h1 matLine>{{comment.comment}}</h1>
-      <p matLine>{{comment.rating}} Stars</p>
-      <p matLine>-- {{comment.author}} {{comment.date|date}} </p>
+    <mat-list fxFlex>
+      <mat-list-item *ngFor="let comment of dish.comments">
+        <h1 matLine>{{comment.comment}}</h1>
+        <p matLine>{{comment.rating}} Stars</p>
+        <p matLine>-- {{comment.author}} {{comment.date|date}} </p>
 
-
-    </mat-list-item>
-  </mat-list>
+      </mat-list-item>
+    </mat-list>
 
 
   </div>
-
+  <div >
+    <h3  *ngIf="cform.valid">{{ comment }}</h3>
+    <p *ngIf="cform.valid">{{ srating  }} Stars</p>
+    <p *ngIf="cform.valid">-- {{author}}</p>
   </div>
+
+
+
+
+  <form novalidate [formGroup]="commentForm" #cform="ngForm" (ngSubmit)="onSubmit()">
+    <p>
+      <mat-form-field class="half-width">
+        <input  matInput formControlName="author" placeholder="Name" type="text" required>
+        <mat-error *ngIf="formErrors.author">
+          {{formErrors.author}}
+        </mat-error>
+      </mat-form-field>
+    </p>
+
+    <mat-slider
+
+      formControlName="srating"
+      #stars
+      tickInterval="5"
+      step="1"
+      min="1"
+      max="5"
+      aria-label="units"></mat-slider>
+
+    <p>
+      <mat-form-field class="full-width">
+        <textarea matInput formControlName="comment" placeholder="Your Comment" rows=12 required></textarea>
+        <mat-error *ngIf="formErrors.comment">
+          {{formErrors.comment}}
+        </mat-error>
+      </mat-form-field>
+
+    </p>
+    <button type="submit" mat-button class="background-primary text-floral-white"
+            [disabled]="commentForm.invalid">Submit</button>
+
+  </form>
+</div>
+
+
 
 
