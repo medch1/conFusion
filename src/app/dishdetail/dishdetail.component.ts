@@ -15,6 +15,7 @@ export class DishdetailComponent implements OnInit {
 
 
 
+  dishcopy:Dish| any;
 
   commentaire: Comment = new Comment();
   commentForm: FormGroup = new FormGroup({
@@ -40,7 +41,7 @@ export class DishdetailComponent implements OnInit {
 
   };
 
-  dish: Dish | undefined;
+  dish: Dish | any;
   errMess: string | undefined;
   dishIds: string[] | undefined;
   prev: string | undefined;
@@ -70,7 +71,7 @@ export class DishdetailComponent implements OnInit {
       .subscribe(dishIds => this.dishIds = dishIds);
     this.route.params
       .pipe(switchMap((params: Params) => this.dishService.getdish(params['id'])))
-      .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); },
+      .subscribe(dish => { this.dish = dish; this.dishcopy=dish; this.setPrevNext(dish.id); },
         errmess=>this.errMess=<any> errmess);
   }
   setPrevNext(dishId:string|undefined) {
@@ -125,10 +126,16 @@ this.location.back();
    /* = this.commentForm.value*/
 
     //this.dish?.comments.push( this.srating,this.comment,this.author,this.dater)
-  this.dish?.comments?.push({rating:this.srating,
+  this.dishcopy?.comments?.push({rating:this.srating,
     comment:this.comment,
   author:this.author,
-  date:this.dater})
+  date:this.dater});
+  this.dishService.putDish(this.dishcopy)
+    .subscribe(dish=>{
+      this.dish=dish;
+      this.dishcopy=dish;
+    },
+      errmess=>{this.dish=null;this.dishcopy=null;this.errMess=<any>errmess;});
     this.commentForm.reset({
       author: '',
       comment:'',
