@@ -6,7 +6,7 @@
      fxLayoutGap="10px"
      fxLayoutGap.xs="0">
 
-  <div fxFlex="40" *ngIf="dish">
+  <div fxFlex="40" *ngIf="dish" [@visibility]="visibility">
     <mat-card>
       <mat-card-header>
        <mat-card-title><h3 *ngIf="dish">{{dish.name | uppercase}}</h3></mat-card-title>
@@ -38,7 +38,7 @@
     <h4>{{errMess}}</h4>
   </div>
 
-  <div fxFlex="40" *ngIf="dish">
+  <div fxFlex="40" *ngIf="dish" [@visibility]="visibility">
     <mat-list fxFlex>
       <mat-list-item *ngFor="let comment of dish.comments">
         <h1 matLine>{{comment.comment}}</h1>
