@@ -1,7 +1,11 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { Feedback, ContactType } from '../shared/feedback';
-import {flyInOut} from "../animations/app.animation";
+import {FeedbackService} from "../services/feedback.service";
+import {expand, flyInOut} from "../animations/app.animation";
+
+
+
 
 @Component({
   selector: 'app-contact',
@@ -12,13 +16,17 @@ import {flyInOut} from "../animations/app.animation";
     'style':'display:block;'
   },
   animations:[
-    flyInOut()
+    flyInOut(),
+    expand(),
+
+
   ]
-})
+}
+)
 export class ContactComponent implements OnInit {
 
-
-  feedback: Feedback = new Feedback;
+  feedbackcopy:Feedback |any ;
+  feedback: Feedback |any;
   contactType = ContactType;
   feedbackForm: FormGroup = new FormGroup({
     firstName: new FormControl(),
@@ -28,7 +36,9 @@ export class ContactComponent implements OnInit {
     agree: new FormControl(),
     contacttype: new FormControl(),
     message: new FormControl()});
-
+  errMess: string | undefined;
+  isloading=true;
+  currentfeedback=false;
   @ViewChild('fform') feedbackFormDirective:any;
 
   formErrors:any={
@@ -61,7 +71,8 @@ export class ContactComponent implements OnInit {
 
   };
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+              private feedbackService:FeedbackService,) {
     this.createForm();
   }
 
@@ -109,6 +120,19 @@ export class ContactComponent implements OnInit {
   onSubmit() {
     this.feedback = this.feedbackForm.value;
     console.log(this.feedback);
+    this.currentfeedback=true;
+    this.feedbackService.submitFeedback(this.feedback)
+      .subscribe(feedback=>{
+
+          this.feedbackcopy = feedback;
+          this.feedback = null;
+          this.isloading = false;
+        setTimeout(() => {
+          this.feedbackcopy = null; this.currentfeedback = false }, 5000);
+
+      },
+        errmess=>{this.feedback=null;this.feedbackcopy=null;this.errMess=<any>errmess;});
+
     this.feedbackForm.reset({
       firstname: '',
       lastname: '',
@@ -120,5 +144,6 @@ export class ContactComponent implements OnInit {
     });
     this.feedbackFormDirective.resetForm();
   }
+
 
 }
